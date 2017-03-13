@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <style>.
+  .pt10{
+    padding-top: 10px;
+  }
+  .tc{
+    text-align: center;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6">
+        <form class="form-inline" id="number-form">
+          <div class="form-group">
+            <label for="numberInput">数字</label>
+            <input type="text" class="form-control" id="numberInput" placeholder="请输入要排序的数字">
+          </div>
+          <button class="btn btn-primary" type="submit">提交</button>
+        </form>
+        <div class="row pt10">
+          <div class="row col-xs-6 col-xs-offset-3">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>序号</th>
+                  <th>数字</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td colspan="2" class="tc" >目前没有数字...</td>
+                  </tr>
+              </tbody>
+            </table>
+            <button type="button" class="btn btn-default">进行排序</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <p class="bg-primary"></p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const oForm = document.getElementById('number-form') ;
+    const oNumInput=document.getElementById('numberInput');
+    const sortBtn=document.querySelector('.btn-default');
+    const oMsg=document.querySelector('.bg-primary');
+     const numArr=[];
+     const arr=[];
+     const orderedArr=[];
+     for(let i=0;i<11;i++){
+        // 桶子里都是空的
+        arr[i]=0;
+     }
+    let gNum=1;
+    oForm.addEventListener('submit',function(event){
+       event.preventDefault();  //阻止默认提交发生；
+      //  trim string 类型的一个方法，去除左右的空格
+       const num=oNumInput.value.trim();
+       // 安全性检测
+      //  num 表单 string类型   parseInt 将字符串变数字
+      //  如果输入的是非数字，返回的就是0
+       if(num.length>0 && !isNaN(num)){
+         if(gNum==1){
+           document.querySelector('tbody').innerHTML = getTrHtml(num);
+         }
+         else{
+         document.querySelector('tbody').innerHTML += getTrHtml(num); }
+         numArr.push(parseInt(num));
+         oNumInput.value='';
+       }
+       else{
+         alert('请输入数字');
+       }
+    });
+    // 功能： 提供新的一行。
+    // 1 序号  从1开始增加。
+    // 2 用户在表单中填的值
+    // 3 返回trhtml
+    // 需要传递一个参数， 当前用户输入的数字
+    function getTrHtml(num) {
+      const str = `
+        <tr>
+         <td>${gNum++}</td>
+         <td>${num}</td>
+        </tr>
+      `;
+      return str;
+    }
+
+
+    // 考试完，要将同学们的成绩进行排序。
+    // 5 3 5 2 8
+    // 分数的从小到大排序。
+ let NUM=1;
+   sortBtn.addEventListener('click',function(){
+      // 1  获取当前用户输入的数据。
+     for(let i=0;i<numArr.length;i++){
+       arr[numArr[i]]++;
+     }
+     console.log(arr);
+     for(let i=0;i<arr.length;i++){
+     for(let y=0;y<arr[i];y++){
+         orderedArr.push(i);
+     }
+   }
+    oMsg.innerHTML=`从小到大排序：${orderedArr}`;
+   })
+
+  </script>
+</body>
+</html>
